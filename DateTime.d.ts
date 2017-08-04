@@ -150,6 +150,18 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         Defines the format for the year-month in the daypicker.
+         */
+        formatYearMonth?: (date: any) => string;
+        /*
+         Defines the format for the year in the monthpicker.
+         */
+        formatYear?: (date: any) => string;
+        /*
+         Defines the format for the years in the yearpicker.
+         */
+        formatYears?: (first: number, last: number) => string;
     }
 
     export interface DatetimepickerState {
