@@ -14,7 +14,7 @@ jest.mock('react-dom', () => ({
 }));
 
 // Mock date to get rid of time as a factor to make tests deterministic
-Date.now = jest.fn(() => 1482363367071);
+Date.now = jest.fn(() => Datetime.moment(1482363367071).utcOffset(1));
 
 it('everything default: renders correctly', () => {
     const tree = renderer.create(
