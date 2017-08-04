@@ -6,13 +6,18 @@ var React = require('react'),
 	;
 
 var DateTimePickerYears = onClickOutside( createClass({
+	formatYears: function(first, last) {
+		return first + '-' + last;
+	},
+
 	render: function() {
-		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
+		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10,
+			formatYears = this.props.formatYears || this.formatYears;
 
 		return React.createElement('div', { className: 'rdtYears' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, formatYears(year, year + 9) ),
 				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
 			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))

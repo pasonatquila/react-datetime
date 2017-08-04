@@ -172,3 +172,19 @@ const TEST_TIME_CONSTRAINTS_WITH_ALL: JSX.Element = <ReactDatetime
 			}
 		} }
 	/>;
+
+/*
+ Test formatter.
+ */
+
+const TEST_FORMATTER: JSX.Element = <ReactDatetime
+		formatYearMonth={
+			(date:Moment) => { return ''; }
+		}
+		formatYear={
+			(date:Moment) => { return ''; }
+		}
+		formatYears={
+			(first:number, last:number) => { return ''; }
+		}
+	/>;
