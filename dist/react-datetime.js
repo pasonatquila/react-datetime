@@ -444,7 +444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		componentProps: {
-			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'formatYearMonth', 'formatYear', 'formatYears'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
 			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 		},
@@ -2719,9 +2719,14 @@ return /******/ (function(modules) { // webpackBootstrap
 		;
 
 	var DateTimePickerDays = onClickOutside( createClass({
+		formatYearMonth: function(date) {
+			return date.localeData().months( date ) + ' ' + date.year();
+		},
+
 		render: function() {
 			var footer = this.renderFooter(),
 				date = this.props.viewDate,
+				formatYearMonth = this.props.formatYearMonth || this.formatYearMonth,
 				locale = date.localeData(),
 				tableChildren
 				;
@@ -2730,7 +2735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				React.createElement('thead', { key: 'th' }, [
 					React.createElement('tr', { key: 'h' }, [
 						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
-						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, formatYearMonth(date) ),
 						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
 					]),
 					React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
@@ -3210,11 +3215,17 @@ return /******/ (function(modules) { // webpackBootstrap
 		;
 
 	var DateTimePickerMonths = onClickOutside( createClass({
+		formatYear: function(date) {
+			return date.year();
+		},
+
 		render: function() {
+			var formatYear = this.props.formatYear || this.formatYear;
+
 			return React.createElement('div', { className: 'rdtMonths' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, formatYear(this.props.viewDate) ),
 					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
 				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
@@ -3323,13 +3334,18 @@ return /******/ (function(modules) { // webpackBootstrap
 		;
 
 	var DateTimePickerYears = onClickOutside( createClass({
+		formatYears: function(first, last) {
+			return first + '-' + last;
+		},
+
 		render: function() {
-			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
+			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10,
+				formatYears = this.props.formatYears || this.formatYears;
 
 			return React.createElement('div', { className: 'rdtYears' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, formatYears(year, year + 9) ),
 					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
 				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
